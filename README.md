@@ -1,5 +1,7 @@
 # A1: Constraint-based verification
 
+Due: March 10
+
 ## Requirements
 Make sure Python3.6 and above is installed
 
@@ -39,7 +41,6 @@ This assignment is designed so that
 Your job is to, given an image I with label L, generate a set of constraints that checks whether classification changes if the first N pixels are modified arbitrarily. Start with N=1, and go up until verification is too slow or you can always change the classification. Try to verify robustness of ~20 images from the test set whose labels are predicted correctly.
 
 Following our notation from class, this is the property we want for an image I with label L
-
 ```
 {x is like I but the first N pixels are different}
 r <- f(x)
