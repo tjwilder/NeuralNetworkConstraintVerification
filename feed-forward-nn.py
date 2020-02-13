@@ -39,7 +39,7 @@ def init_model_parameters():
     # Hidden layer contains 500 nodes
     # Output layer contains 10 nodes (one for each class representing a digit between 0-9)
     input_size = 784
-    hidden_size = 500
+    hidden_size = 10
     num_classes = 10
     num_epochs = 5
     batch_size = 100
@@ -121,15 +121,15 @@ def test():
 # fetch the weights of the neural network returned as tensors
 # pass layer as int (1: input to hidden or 2: hidden to output)
 def fetch_weights(layer):
-    # Weights between input layer and hidden layer (Tensor of shape: [500, 784] i.e. hidden layer size * input layer size)
+    # Weights between input layer and hidden layer (Tensor of shape: [#hidden, 784] i.e. hidden layer size * input layer size)
     if layer == 1:
         return model.fc1.weight.data
-    # Weights between input layer and hidden layer (Tensor of shape: [10, 500] i.e. output layer size * hidden layer size)
+    # Weights between input layer and hidden layer (Tensor of shape: [10, #hidden] i.e. output layer size * hidden layer size)
     if layer == 2:
         return model.fc2.weight.data
 
 def plot_dataset(image):
-    plt.imshow(image[0][0])
+    plt.imshow(image[0][0], cmap='gray')
     plt.show()
 
 def main():
