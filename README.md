@@ -33,3 +33,13 @@ This assignment is designed so that
 - ```train()``` trains the neural network, and ```test()``` tests it. You might want to add a function that saves the trained neural network so you do not retrain it every time.
 
 - the function ```plot_dataset``` draws a given image; see ```main()``` for an example.
+
+## Your job
+
+Your job is to, given an image I with label L, generate a set of constraints that checks whether classification changes if the first N pixels are modified arbitrarily. Start with N=1, and go up until verification is too slow or you can always change the classification. Try to verify robustness of ~20 images from the test set.
+
+If you find verification is too slow, you can make the network smaller, e.g., by making the hidden layer smaller or by removing the last linear layer.
+
+If verification fails, the SMT solver will give you a model, which is an image. Make sure to print out the image. This will entail converting the model back into a tensor.
+
+Comment your code extensively. This is not an undergraduate assignment where we run your code through a testing suite. We will look at your encoding to see if you understand the problem and 
