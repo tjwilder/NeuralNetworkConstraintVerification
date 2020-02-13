@@ -1,4 +1,4 @@
-# Assignment1-FeedForwardNN
+# A1: Constraint-based verification
 
 Make sure Python3.6 and above is installed
 
