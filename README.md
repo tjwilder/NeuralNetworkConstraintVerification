@@ -51,4 +51,4 @@ If you find verification is too slow, you can make the network smaller, e.g., by
 
 If verification fails, the SMT solver will give you a model, which is an image. Make sure to print out the image. This will entail converting the model back into a tensor.
 
-Comment your code extensively. This is not an undergraduate assignment where we run your code through a testing suite. We will look at your encoding to see if you understand the problem and 
+Comment your code extensively. This is not an undergraduate assignment where we run your code through a testing suite. We will look at your encoding to see if you've understood the problem.
