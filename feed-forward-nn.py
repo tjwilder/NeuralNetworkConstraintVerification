@@ -18,6 +18,7 @@ class NeuralNet(nn.Module):
         # initializes a weight matrix of shape (hidden_size * input_size)
         self.fc1 = nn.Linear(input_size, hidden_size)
         self.relu = nn.ReLU()
+        
         # initializes a weight matrix of shape (num_classes * hidden_size)
         self.fc2 = nn.Linear(hidden_size, num_classes)
     
@@ -27,6 +28,7 @@ class NeuralNet(nn.Module):
         out = self.fc1(x)
         # applies the RELU activation function on the hidden layer
         out = self.relu(out)
+
         # applies linear transformation to the hidden layer to map to the output layer
         out = self.fc2(out)
         return out
@@ -112,6 +114,7 @@ def test():
             outputs = model(images)
             # fetching the class with maximum probability for every image in the batch as the predicted label
             _, predicted = torch.max(outputs.data, 1)
+            print ("Bing: ", outputs, predicted)
             total += labels.size(0)
             # compute the total correctly predicted outcomes (when test image label = predicted)
             correct += (predicted == labels).sum().item()
@@ -138,7 +141,7 @@ def main():
     train()
     test()
     print(fetch_weights(1))
-    print(fetch_weights(2))
+    
     # Print first image in the test dataset
     for i, image in enumerate(test_dataset):
         if i == 0:
