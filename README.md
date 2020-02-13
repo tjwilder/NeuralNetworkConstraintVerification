@@ -36,7 +36,7 @@ This assignment is designed so that
 
 ## Your job
 
-Your job is to, given an image I with label L, generate a set of constraints that checks whether classification changes if the first N pixels are modified arbitrarily. Start with N=1, and go up until verification is too slow or you can always change the classification. Try to verify robustness of ~20 images from the test set.
+Your job is to, given an image I with label L, generate a set of constraints that checks whether classification changes if the first N pixels are modified arbitrarily. Start with N=1, and go up until verification is too slow or you can always change the classification. Try to verify robustness of ~20 images from the test set whose labels are predicted correctly.
 
 If you find verification is too slow, you can make the network smaller, e.g., by making the hidden layer smaller or by removing the last linear layer.
 
