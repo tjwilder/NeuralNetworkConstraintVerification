@@ -48,7 +48,7 @@ r <- f(x)
 ```
 Notice that we take the largest index of the size 10 output vector. 
 
-If you find verification is too slow, you can make the network smaller, e.g., by making the hidden layer smaller or by removing the last linear layer.
+If you find verification is too slow, you can make the network smaller, e.g., by making the hidden layer smaller or by removing the last linear layer. Also, you can reduce the precision of the weights by dropping some of the fraction, e.g., 1.59845 becomes 1.598.
 
 If verification fails, the SMT solver will give you a model, which is an image. Make sure to print out the image. This will entail converting the model back into a tensor.
 
