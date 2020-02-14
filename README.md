@@ -56,3 +56,5 @@ Comment your code extensively. This is not an undergraduate assignment where we 
 
 ## Hand in
 Please send zip file to aws@cs.wisc.edu
+
+This is an individual assignment, but feel free to discuss with colleagues.
