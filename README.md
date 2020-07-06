@@ -1,6 +1,8 @@
-# A1: Constraint-based verification
+# Constraint-based verification of Neural Networks
 
-Due: March 10
+## Goal ##
+
+In this model, we first train a simple neural network on the MNIST training set to do digit classification. Next, we take the trained model and correctly classified images and use Z3 as a solver to edit them slightly and cause a misclassification. This requires full knowledge of the trained model. The edits for misclassification are made by editing the pixels starting at the top-left corner, until it finds the minimum number of pixels required for misclassification.
 
 ## Requirements
 Make sure Python3.6 and above is installed
@@ -17,44 +19,32 @@ pip install z3-solver
 
 To run the program
 ```
-python3 feed-forward-nn.py
+python3 constraint_verifier.py train[ max=60]
+python3 constraint_verifier.py load[ max=60]
 ```
-
-## Goals
-
-This assignment is designed so that 
-1. You are comfortable with PyTorch and training simple neural networks. You will have to do a lot of digging to understand parts of the code; don't worry, this is part of the assignment.
-2. You are comfortable with encoding neural networks and correctness properties as formulas. You will have to do a lot of digging to understand Z3's API.
+- `train`: Retrain the network, save it, then run the verification
+- `load`: Load the saved network, then run verification
+- `max`: The maximum number of "free" pixels to allow in the counter-example
 
 ## The code
 
 - This is the (at this point in time) toy classification task for MNIST digits. Each image is a handwritten digit between 0 and 9 and our goal is to classify the digit. Each image is 768 pixels (28x28).
 
-- The class ``` NeuralNet``` defines the neural network. It's a very simple neural network, with a linear layer (10 nodes) followed by ReLUs (10), followed by a linear layer (10). Therefore, the neural network has 10 outputs, indicating which digit we are talking about. (Note that there is no softmax layer.)
+- The class `NeuralNet` defines the neural network. It's a very simple neural network, with a linear layer (10 nodes) followed by ReLUs (10), followed by a linear layer (10). Therefore, the neural network has 10 outputs, indicating which digit we are talking about. (Note that there is no softmax layer.)
 
-- ```train()``` trains the neural network, and ```test()``` tests it. You might want to add a function that saves the trained neural network so you do not retrain it every time.
+- The class `Verifier` defines the Z3 verifier for a given model and number of "free" pixels (pixels that are allowed to change)
+    - `solve_with(input_image, output_index)` checks if the there exists any version of the "free" pixels which changes the classification of the model from the `output_index` to some other value
 
-- the function ```plot_dataset``` draws a given image; see ```main()``` for an example.
+- `train()` trains the neural network, and `test()` tests it. You might want to add a function that saves the trained neural network so you do not retrain it every time.
 
-## Your job
+- the function `plot_dataset` draws a given image; see `main()` for an example.
 
-Your job is to, given an image I with label L, generate a set of constraints that checks whether classification changes if the first N pixels are modified arbitrarily. Start with N=1, and go up until verification is too slow or you can always change the classification. Try to verify robustness of ~20 images from the test set whose labels are predicted correctly.
+- the function `main()` trains (if requested) and tests the model, before verifying the robustness using `verify(max_pixels)`
 
-Following our notation from class, this is the property we want for an image I with label L
-```
-{x is like I but the first N pixels are different}
-r <- f(x)
-{argmax_i r_i = L}
-```
-Notice that we take the largest index of the size 10 output vector. 
+- `verify(max_pixels)` goes through each test image and attempts to verify whether it's robust for [1, 10, 20, 30, 40, ...] pixels. For each verification, the Z3 solver is given 2 minutes to solve (configured in `Verifier.__init__()`) the not-robust problem and give a counter-example. At the end, the method prints out the number of robust images, the number which are not robust, and the number where verification timed out. It then displays all pairs of (original, counter_example) as image.
 
-If you find verification is too slow, you can make the network smaller, e.g., by making the hidden layer smaller or by removing the last linear layer. Also, you can reduce the precision of the weights by dropping some of the fraction, e.g., 1.59845 becomes 1.598.
+## Output
 
-If verification fails, the SMT solver will give you a model, which is an image. Make sure to print out the image. This will entail converting the model back into a tensor.
-
-Comment your code extensively. This is not an undergraduate assignment where we run your code through a testing suite. We will look at your encoding to see if you've understood the problem.
-
-## Hand in
-Please send zip file to aws@cs.wisc.edu
-
-This is an individual assignment, but feel free to discuss with colleagues.
+- When I run this code, it successfully verifies that 5 of the first 20 images are robust, 11 timed out in verification, and outputs the 4 pairs that it found counter-examples for.
+    - Image ![Ouptuts](output.png "Original Images and Counter-Examples")
+- I have included my model, so it should work, but if you need to retrain, the results may be different
